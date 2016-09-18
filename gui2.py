@@ -23,7 +23,7 @@ threevar.set(True)
 one = ttk.Checkbutton(content, text="One", variable=onevar, onvalue=True)
 two = ttk.Checkbutton(content, text="Two", variable=twovar, onvalue=True)
 three = ttk.Checkbutton(content, text="Three", variable=threevar, onvalue=True)
-save = ttk.Button(content, text="Save", )
+save = ttk.Button(content, text="Save", command = write_text())
 scan = ttk.Button(content, text="Scan", command= decode(analyze.processword(retrieve_input())))
 
 content.grid(column=0, row=0, sticky=(N, S, E, W))
@@ -64,3 +64,6 @@ def decode (lst):
 
 def retrieve_input():
     input = self.myText_Box.get("1.0",END)
+
+def write_text():
+    text_file = open("Output.txt", "w")
