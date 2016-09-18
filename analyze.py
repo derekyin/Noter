@@ -42,9 +42,11 @@ def analyze_entities(text, encoding='UTF32'):
 
 #if __name__ == '__main__':    
 def processText(rawText):
+    print "Start"
     #rawText = "this is a test to see if you are smart in canada or the united states of america. Donald Trump is fat and white and stupid. Donald Trump is not intelligent because Tesla. Donald Trump. Donald Trump. Donald Trump."
     #print rawText
     result = analyze_entities(rawText, get_native_encoding_type())
+    print "StarTwo"
 
     counter = {}
     position = {}
@@ -62,9 +64,8 @@ def processText(rawText):
                 lst.append(pos)
                 position[word] = lst;
             
-
+    print "StartThree"
     num = len(counter)
-    print num
     curSum = 0
     for key in counter:
         curSum = curSum + int(counter[key])
@@ -73,7 +74,6 @@ def processText(rawText):
         average = float(curSum*1.0/num)
     else:
         average = 0
-    print average
     #print curSum
     #print average
     #list of json objects to return
@@ -98,8 +98,7 @@ def processText(rawText):
             "highlight":importance
         }
         lst.append(keyword)
-    print(json.dumps(lst, indent=2))
-    
+    print "StartFour"
     return lst
     #for key in counter:
     #    print key

@@ -1,55 +1,66 @@
+import webbrowser
 from Tkinter import *
 import ttk
 import analyze
+import re
+root = Tk()
+
+content = ttk.Frame(root, padding=(3,3,8,12))
+display = True
+frame = Text(content, borderwidth=5, relief="sunken", width=120, height=80)
+namelbl = ttk.Label(content, text="Glossary")
+namelbl.config(font=("Courier", 20))
+link = []
+root.geometry('{}x{}'.format(1200,600))
+root.minsize(width = 1200, height = 600)
+root.title("noter")
+
+def retrieve_input():
+    input = frame.get("1.0",END)
+    return input
+def callback(string):
+        webbrowser.open_new(r"http://www.google.com/search?q=%s" % string)
 
 def decode (lst):
-    #text = text from textfield
+    text = retrieve_input()
     newText = ""
     #bold keywords
     for key in lst:
+        #newText = ""
         for word in key["position"]:
-            newText += text[:word["position"] + 1]
-            text = text[:word["position"]]  #truncate original text
-            newText += "<b>" + text[:key["word"]] + "</b>" #bold keyword
-            text = text[:text[:key["word"] + 1]] #truncate original text
+            word = int(word)
+            newText += text[:word]
+            text = text[word:]  #truncate original text
+            newText += "<<  " + text[:len(key["word"])] + "  >>" #bold keyword
+            text = text[len(key["word"]):] #truncate original text
         newText += text #add remaining text
-        text = newText #reset text for next wave of bolding
-                
+        text = "" #reset text for next wave of bolding
+        
+    i = 0
+    for key in lst:
+        link.append( Label(root, text=key["word"], fg="blue", cursor="hand2"))
+        link[i].bind("<Button-1>", lambda x: callback(key["word"]))
+        link[i].pack(fill = X)
+        link[i].place (x=1050, y = 50 * (i + 1))
+        i += 1
     return newText
-
-def retrieve_input():
-    input = self.myText_Box.get("1.0",END)
 
 def write_text():
     text_file = open("Output.txt", "w")
-    lst = analyze.processWord (retrieve_input())
+    lst = analyze.processText (retrieve_input())
     text_file.write("Glossary\n")
     for key in lst:
         text_file.write("%s" %key["word"])
 
-root = Tk()
-
-content = ttk.Frame(root, padding=(3,3,8,12))
-frame = Text(content, borderwidth=5, relief="sunken", width=120, height=80)
-namelbl = ttk.Label(content, text="Glossary")
-namelbl.config(font=("Courier", 20))
-
+def debugPrint():
+    print "Yes"
 
 #name = ttk.Entry(content)
 
-onevar = BooleanVar()
-twovar = BooleanVar()
-threevar = BooleanVar()
+save = ttk.Button(content, text="Save", command = debugPrint)
 
-onevar.set(True)
-twovar.set(False)
-threevar.set(True)
-
-one = ttk.Checkbutton(content, text="One", variable=onevar, onvalue=True)
-two = ttk.Checkbutton(content, text="Two", variable=twovar, onvalue=True)
-three = ttk.Checkbutton(content, text="Three", variable=threevar, onvalue=True)
-save = ttk.Button(content, text="Save", command = write_text())
-scan = ttk.Button(content, text="Scan", command= decode(analyze.processword(retrieve_input())))
+print "Got here"
+scan = ttk.Button(content, text="Scan", command= lambda:frame.insert(END,"\n" + decode(analyze.processText(retrieve_input()))))
 
 content.grid(column=0, row=0, sticky=(N, S, E, W))
 frame.grid(column=0, row=0, columnspan=2, rowspan=2, sticky=(N, S, E, W))
@@ -70,6 +81,6 @@ content.columnconfigure(3, weight=1)
 content.columnconfigure(4, weight=1)
 content.rowconfigure(1, weight=1)
 
-root.mainloop()
+mainloop()
 
 
