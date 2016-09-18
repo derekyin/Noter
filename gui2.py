@@ -2,6 +2,31 @@ from Tkinter import *
 import ttk
 import analyze
 
+def decode (lst):
+    #text = text from textfield
+    newText = ""
+    #bold keywords
+    for key in lst:
+        for word in key["position"]:
+            newText += text[:word["position"] + 1]
+            text = text[:word["position"]]  #truncate original text
+            newText += "<b>" + text[:key["word"]] + "</b>" #bold keyword
+            text = text[:text[:key["word"] + 1]] #truncate original text
+        newText += text #add remaining text
+        text = newText #reset text for next wave of bolding
+                
+    return newText
+
+def retrieve_input():
+    input = self.myText_Box.get("1.0",END)
+
+def write_text():
+    text_file = open("Output.txt", "w")
+    lst = analyze.processWord (retrieve_input())
+    text_file.write("Glossary\n")
+    for key in lst:
+        text_file.write("%s" %key["word"])
+
 root = Tk()
 
 content = ttk.Frame(root, padding=(3,3,8,12))
@@ -47,23 +72,4 @@ content.rowconfigure(1, weight=1)
 
 root.mainloop()
 
-def decode (lst):
-    #text = text from textfield
-    newText = ""
-    #bold keywords
-    for key in lst:
-        for word in key["position"]:
-            newText += text[:word["position"] + 1]
-            text = text[:word["position"]]  #truncate original text
-            newText += "<b>" + text[:key["word"]] + "</b>" #bold keyword
-            text = text[:text[:key["word"] + 1]] #truncate original text
-        newText += text #add remaining text
-        text = newText #reset text for next wave of bolding
-                
-    return newText
 
-def retrieve_input():
-    input = self.myText_Box.get("1.0",END)
-
-def write_text():
-    text_file = open("Output.txt", "w")
