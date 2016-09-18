@@ -10,9 +10,9 @@ T.pack()
 quote = """Sample text"""
 T.insert(END, quote)
 
-W = Button(root, text ="Submit", command = helloCallBack)
+W = Button(root, text ="Scan", command = helloCallBack)
 W.pack()
-W = Button(root, text ="Blank Button", command = helloCallBack)
+W = Button(root, text ="Save", command = helloCallBack)
 W.pack()
 
 
