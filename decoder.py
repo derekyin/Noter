@@ -10,7 +10,7 @@ def decode (lst):
             newText += text[:word["position"] + 1]
             text = text[:word["position"]]  #truncate original text
             newText += "<b>" + text[:key["word"]] + "</b>" #bold keyword
-            text = text[:text[:key["word"] + 1] #truncate original text
+            text = text[:text[:key["word"] + 1]] #truncate original text
         newText += text #add remaining text
         text = newText #reset text for next wave of bolding
                 

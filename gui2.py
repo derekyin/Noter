@@ -23,8 +23,8 @@ threevar.set(True)
 one = ttk.Checkbutton(content, text="One", variable=onevar, onvalue=True)
 two = ttk.Checkbutton(content, text="Two", variable=twovar, onvalue=True)
 three = ttk.Checkbutton(content, text="Three", variable=threevar, onvalue=True)
-ok = ttk.Button(content, text="Save")
-cancel = ttk.Button(content, text="Scan")
+save = ttk.Button(content, text="Save", )
+scan = ttk.Button(content, text="Scan", command= decode(analyze.processword(retrieve_input())))
 
 content.grid(column=0, row=0, sticky=(N, S, E, W))
 frame.grid(column=0, row=0, columnspan=2, rowspan=2, sticky=(N, S, E, W))
@@ -33,8 +33,8 @@ namelbl.grid(column=2, row=1, columnspan=2, sticky=(N, E, W), pady=5, padx=5)
 #one.grid(column=4, row=3)
 #two.grid(column=1, row=3)
 #three.grid(column=3, row=3)
-ok.grid(column=0, row=3)
-cancel.grid(column=1, row=3)
+save.grid(column=0, row=3)
+scan.grid(column=1, row=3)
 
 root.columnconfigure(0, weight=1)
 root.rowconfigure(0, weight=1)
@@ -56,8 +56,11 @@ def decode (lst):
             newText += text[:word["position"] + 1]
             text = text[:word["position"]]  #truncate original text
             newText += "<b>" + text[:key["word"]] + "</b>" #bold keyword
-            text = text[:text[:key["word"] + 1] #truncate original text
+            text = text[:text[:key["word"] + 1]] #truncate original text
         newText += text #add remaining text
         text = newText #reset text for next wave of bolding
                 
     return newText
+
+def retrieve_input():
+    input = self.myText_Box.get("1.0",END)
